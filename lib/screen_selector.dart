@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:shopping/customer.dart';
 import 'package:shopping/homepage.dart';
+import 'package:shopping/order_historypage.dart';
+import 'package:shopping/orderpage.dart';
 
 class ScreenSelector extends StatefulWidget {
   const ScreenSelector({super.key, required this.title});
@@ -11,13 +15,14 @@ class ScreenSelector extends StatefulWidget {
 }
 
 class _ScreenSelectorState extends State<ScreenSelector> {
+  int selectedTab = 0;
   @override
   Widget build(BuildContext context) {
-    int _selectedTab = 0;
     List<Widget> tabs = [
       HomeScreen(),
-      // OrdersScreen(),
-      // SettingsScreen(),
+      const OrderPage(),
+      const OrderHistorypage(),
+      const CustomerPage()
       // ProfileScreen(),
     ];
 
@@ -43,41 +48,35 @@ class _ScreenSelectorState extends State<ScreenSelector> {
                   fontWeight: FontWeight.bold,
                   fontSize: 30),
             ),
-            // TextField(
-            //   decoration: InputDecoration(
-            //       fillColor: Colors.blue, // Set the background color
-            //       filled:
-            //           true, // Ensure the background color fills the entire TextField
-            //       border: OutlineInputBorder(
-            //         borderRadius: BorderRadius.circular(10),
-            //         borderSide: BorderSide.none, // Remove the border
-            //       ),
-            //       prefixIcon: IconButton(
-            //           onPressed: () {}, icon: const Icon(Icons.search))),
-            // ),
-            
+          
           ],
         ),
-        
         actions:  [
-        //  TextField(
-        //       decoration: InputDecoration(
-        //           fillColor: Colors.blue, // Set the background color
-        //           filled:
-        //               true, // Ensure the background color fills the entire TextField
-        //           border: OutlineInputBorder(
-        //             borderRadius: BorderRadius.circular(10),
-        //             borderSide: BorderSide.none, // Remove the border
-        //           ),
-        //           prefixIcon: IconButton(
-        //               onPressed: () {}, icon: const Icon(Icons.search))),
-        //     ),
-          CircleAvatar(
-            backgroundImage:
-                NetworkImage('https://example.com/profile-picture.jpg'),
-            radius: 15,
+          Row(
+            children: [
+              IconButton(
+                icon: const Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage:
+                          NetworkImage('https://example.com/profile-picture.jpg'),
+                      radius: 18,
+                    ),
+                    Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  'Shyjin',
+                  style: TextStyle(color: Colors.white,fontSize: 20),
+                ),
+              ),
+                  ],
+                ), onPressed: () {  },
+              ),
+              const SizedBox(width: 10), // Adjust spacing as needed
+              
+            ],
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           )
         ],
@@ -85,31 +84,41 @@ class _ScreenSelectorState extends State<ScreenSelector> {
       body: Row(
         children: [
           Expanded(
-            flex: 1,
-            child: ListView(
-              children: [
-                ListTile(
-                  title: Text('Home'),
-                  onTap: () => setState(() => _selectedTab = 0),
+              flex: 1,
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(
+                      color: HexColor("#F2E4CC"), // Color of the right border
+                      width: 2.0, // Width of the right border
+                    ),
+                  ),
                 ),
-                ListTile(
-                  title: Text('Orders'),
-                  onTap: () => setState(() => _selectedTab = 1),
+                child: ListView(
+                  children: [
+                    ListTile(
+                      title: const Text('Home'),
+                      onTap: () => setState(() => selectedTab = 0),
+                    ),
+                    ListTile(
+                      title: const Text('New Orders'),
+                      onTap: () => setState(() => selectedTab = 1),
+                    ),
+                    ListTile(
+                      title: const Text('Order History'),
+                      onTap: () => setState(() => selectedTab = 2),
+                    ),
+                    ListTile(
+                      title: const Text('Customer'),
+                      onTap: () => setState(() => selectedTab = 3),
+                    ),
+                  ],
                 ),
-                ListTile(
-                  title: Text('Settings'),
-                  onTap: () => setState(() => _selectedTab = 2),
-                ),
-                ListTile(
-                  title: Text('Profile'),
-                  onTap: () => setState(() => _selectedTab = 3),
-                ),
-              ],
-            ),
-          ),
+              )),
           Expanded(
-            flex: 6,
-            child: tabs[_selectedTab],
+            flex: 5,
+            child: tabs[selectedTab],
           ),
         ],
       ),
