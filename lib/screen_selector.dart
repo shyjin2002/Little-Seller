@@ -4,6 +4,10 @@ import 'package:shopping/customer.dart';
 import 'package:shopping/homepage.dart';
 import 'package:shopping/order_historypage.dart';
 import 'package:shopping/orderpage.dart';
+import 'package:shopping/product_page.dart';
+import 'package:shopping/profile_page.dart';
+import 'package:shopping/setting_page.dart';
+import 'package:shopping/temp.dart';
 
 class ScreenSelector extends StatefulWidget {
   const ScreenSelector({super.key, required this.title});
@@ -22,7 +26,10 @@ class _ScreenSelectorState extends State<ScreenSelector> {
       HomeScreen(),
       const OrderPage(),
       const OrderHistorypage(),
-      const CustomerPage()
+      const CustomerPage(),
+      ProductGrid(),
+      const ProfilePage(),
+      const SettingPage()
       // ProfileScreen(),
     ];
 
@@ -112,6 +119,18 @@ class _ScreenSelectorState extends State<ScreenSelector> {
                     ListTile(
                       title: const Text('Customer'),
                       onTap: () => setState(() => selectedTab = 3),
+                    ),
+                    ListTile(
+                      title: const Text('Product'),
+                      onTap: () => setState(() => selectedTab = 4),
+                    ),
+                    ListTile(
+                      title: const Text('Profile'),
+                      onTap: () => setState(() => selectedTab = 5),
+                    ),
+                    ListTile(
+                      title: const Text('Setting'),
+                      onTap: () => setState(() => selectedTab = 6),
                     ),
                   ],
                 ),

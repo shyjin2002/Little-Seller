@@ -1,15 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shopping/firebaseOption.dart';
 import 'package:shopping/screen_selector.dart';
+import 'package:image_picker/image_picker.dart';
 
-void main() {
-  Firebase.initializeApp(options: const FirebaseOptions(apiKey: "AIzaSyAYaoRTfxxId479-5D989w_7UFEI172Oo8",
-  authDomain: "shopping-45cf6.firebaseapp.com",
-  projectId: "shopping-45cf6",
-  storageBucket: "shopping-45cf6.appspot.com",
-  messagingSenderId: "598599070096",
-  appId: "1:598599070096:web:afd82e3a8d4825aaa9c315",
-  measurementId: "G-7983QSSQKK"));
+void main() async{
+  
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(const MyApp());
 }
 
