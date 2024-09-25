@@ -4,10 +4,9 @@ import 'package:shopping/customer.dart';
 import 'package:shopping/homepage.dart';
 import 'package:shopping/order_historypage.dart';
 import 'package:shopping/orderpage.dart';
-import 'package:shopping/product_page.dart';
+import 'package:shopping/ui/product_page/product_page.dart';
 import 'package:shopping/profile_page.dart';
 import 'package:shopping/setting_page.dart';
-import 'package:shopping/temp.dart';
 
 class ScreenSelector extends StatefulWidget {
   const ScreenSelector({super.key, required this.title});
@@ -27,7 +26,7 @@ class _ScreenSelectorState extends State<ScreenSelector> {
       const OrderPage(),
       const OrderHistorypage(),
       const CustomerPage(),
-      ProductGrid(),
+      const ProductPage(),
       const ProfilePage(),
       const SettingPage()
       // ProfileScreen(),
