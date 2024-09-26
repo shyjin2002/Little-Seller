@@ -7,6 +7,8 @@ import 'package:shopping/orderpage.dart';
 import 'package:shopping/ui/product_page/product_page.dart';
 import 'package:shopping/profile_page.dart';
 import 'package:shopping/setting_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 class ScreenSelector extends StatefulWidget {
   const ScreenSelector({super.key, required this.title});
@@ -102,37 +104,58 @@ class _ScreenSelectorState extends State<ScreenSelector> {
                   ),
                 ),
                 child: ListView(
-                  children: [
-                    ListTile(
-                      title: const Text('Home'),
-                      onTap: () => setState(() => selectedTab = 0),
-                    ),
-                    ListTile(
-                      title: const Text('New Orders'),
-                      onTap: () => setState(() => selectedTab = 1),
-                    ),
-                    ListTile(
-                      title: const Text('Order History'),
-                      onTap: () => setState(() => selectedTab = 2),
-                    ),
-                    ListTile(
-                      title: const Text('Customer'),
-                      onTap: () => setState(() => selectedTab = 3),
-                    ),
-                    ListTile(
-                      title: const Text('Product'),
-                      onTap: () => setState(() => selectedTab = 4),
-                    ),
-                    ListTile(
-                      title: const Text('Profile'),
-                      onTap: () => setState(() => selectedTab = 5),
-                    ),
-                    ListTile(
-                      title: const Text('Setting'),
-                      onTap: () => setState(() => selectedTab = 6),
-                    ),
-                  ],
-                ),
+  children: [
+    ListTile(
+      leading: Icon(Icons.home),
+      title: const Text('Home'),
+      onTap: () => setState(() => selectedTab = 0),
+      selected: selectedTab == 0,
+      selectedTileColor: Colors.orange.withOpacity(0.2), // Change this color as desired
+    ),
+    ListTile(
+      leading: Icon(Icons.add_shopping_cart),
+      title: const Text('New Orders'),
+      onTap: () => setState(() => selectedTab = 1),
+      selected: selectedTab == 1,
+      selectedTileColor: Colors.orange.withOpacity(0.2), // Change this color as desired
+    ),
+    ListTile(
+      leading: Icon(Icons.history),
+      title: const Text('Order History'),
+      onTap: () => setState(() => selectedTab = 2),
+      selected: selectedTab == 2,
+      selectedTileColor: Colors.orange.withOpacity(0.2), // Change this color as desired
+    ),
+    ListTile(
+      leading: Icon(Icons.people),
+      title: const Text('Customer'),
+      onTap: () => setState(() => selectedTab = 3),
+      selected: selectedTab == 3,
+      selectedTileColor: Colors.orange.withOpacity(0.2), // Change this color as desired
+    ),
+    ListTile(
+      title: const Text('Product'),
+      leading: FaIcon(FontAwesomeIcons.productHunt),
+      onTap: () => setState(() => selectedTab = 4),
+      selected: selectedTab == 4,
+      selectedTileColor: Colors.orange.withOpacity(0.2), // Change this color as desired
+    ),
+    ListTile(
+      leading: Icon(Icons.person),
+      title: const Text('Profile'),
+      onTap: () => setState(() => selectedTab = 5),
+      selected: selectedTab == 5,
+      selectedTileColor: Colors.orange.withOpacity(0.2), // Change this color as desired
+    ),
+    ListTile(
+      leading: Icon(Icons.settings),
+      title: const Text('Setting'),
+      onTap: () => setState(() => selectedTab = 6),
+      selected: selectedTab == 6,
+      selectedTileColor: Colors.orange.withOpacity(0.2), // Change this color as desired
+    ),
+  ],
+)
               )),
           Expanded(
             flex: 5,

@@ -9,6 +9,7 @@ void main() async{
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
   
+  
   runApp(const MyApp());
 }
 

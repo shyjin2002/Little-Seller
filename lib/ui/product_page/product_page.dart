@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:shopping/data/data_model/product_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shopping/logic/locator.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -15,7 +16,7 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  List<ProductModel> allProducts = [];
+  List<ProductModel> allProducts =Locator.productManagementService.allProducts;
   bool isLoading = true;
   String? _pickedimage;
   bool hasImageBeenSelected = false;
@@ -23,63 +24,14 @@ class _ProductPageState extends State<ProductPage> {
 
   DateTime? _createdDate;
 
-  String imageUrl = '';
+  
   String selectFile = '';
 
-  @override
-  void initState() {
-    super.initState();
-    _initializeAllProducts();
-  }
+ 
 
-  Future<void> _initializeAllProducts() async {
-    setState(() => isLoading = true);
-    try {
-      allProducts = await getAllProducts();
-    } catch (e) {
-      print('Error fetching documents: $e');
-    }
-    setState(() => isLoading = false);
-  }
+  
 
-  Future<List<ProductModel>> getAllProducts() async {
-    try {
-      // Fetch all documents from the 'products' collection
-      QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('products').get();
-
-      // Create a list to store ProductModel instances
-      List<ProductModel> products = [];
-
-      // Iterate through each document and create ProductModel instances
-      for (DocumentSnapshot doc in querySnapshot.docs) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-        // Convert Timestamp to DateTime if present
-        DateTime? createdAt =
-            data['createdAt'] is Timestamp ? data['createdAt'].toDate() : null;
-
-        // Create ProductModel instance
-        ProductModel product = ProductModel(
-          productName: data['productName'],
-          productPrice: data['productPrice'],
-          productId: data['productId'],
-          createdAt: createdAt,
-          productPhotoUrl: data['productPhotoUrl'],
-          description: data['description'],
-        );
-
-        // Add the ProductModel to the list
-        products.add(product);
-        allProducts = products;
-      }
-
-      return products;
-    } catch (e) {
-      // print('Error fetching documents: $e');
-      rethrow;
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +99,7 @@ class _ProductPageState extends State<ProductPage> {
             Container(
               height: 70,
               child: StreamBuilder<String?>(
-                stream: getDownloadURLStream(product.productPhotoUrl!),
+                stream: Locator.productDatabaseService.getDownloadURLStream(product.productPhotoUrl!),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(
@@ -250,15 +202,6 @@ class _ProductPageState extends State<ProductPage> {
         }
 
         void _submitForm() async {
-          UploadTask uploadTask;
-          Reference ref = FirebaseStorage.instance
-              .ref()
-              .child("images")
-              .child('/' + selectFile);
-          final metadata = SettableMetadata(contentType: "image/jpeg");
-          uploadTask = ref.putData(selectedImageBytes, metadata);
-          await uploadTask.whenComplete(() => null);
-          imageUrl = await ref.getDownloadURL();
           if (_formKey.currentState!.validate()) {
             // Create ProductModel
             final product = ProductModel(
@@ -266,14 +209,11 @@ class _ProductPageState extends State<ProductPage> {
               productPrice: _productPriceController.text,
               description: _descriptionController.text,
               createdAt: _createdDate ?? DateTime.now(),
-              productPhotoUrl: imageUrl,
+              // productPhotoUrl: imageUrl,
             );
 
             // Save to Firestore
-            await FirebaseFirestore.instance
-                .collection('products')
-                .add(product.toJson());
-            getAllProducts();
+            Locator.productManagementService.addProduct(selectFile, selectedImageBytes, product);
             Navigator.pop(context); // Close the form
           }
         }
@@ -580,14 +520,4 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-Stream<String?> getDownloadURLStream(String imagePath) async* {
-  yield null;
-  try {
-    final ref = FirebaseStorage.instance.ref().child(imagePath);
-    final url = await ref.getDownloadURL();
-    yield url;
-  } catch (e) {
-    print('Error getting download URL: $e');
-    yield null;
-  }
-}
+
